@@ -8,6 +8,8 @@ public class GargoilController : MonoBehaviour
     private CharacterData _gargoil;
 
     public float _attackDelay;
+    public float _x;
+    public float _y;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +22,9 @@ public class GargoilController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _x = transform.position.x;
+        _y = transform.position.y;
+
         if (_gargoil.IsDead)
         {
             _gargoil.State = CharacterState.Dead;
@@ -87,7 +92,7 @@ public class GargoilController : MonoBehaviour
             var enemyBounds = enemy.GetComponent<SpriteRenderer>().bounds;
             if (_renderer.bounds.Intersects(enemyBounds))
             {
-                enemy.GetComponent<CharacterData>().Health -= Random.Range(0, _gargoil.Strength) * _gargoil.Speed * Time.deltaTime;
+                enemy.GetComponent<CharacterData>().Hit(_gargoil);
             }
         }
     }

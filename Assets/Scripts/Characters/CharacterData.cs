@@ -1,9 +1,12 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class CharacterData : MonoBehaviour
 {
     private Animator _animator;
     private SpriteRenderer _renderer;
+    private BoxCollider2D _boxCollider;
 
     private Vector3 _initialPosition;
     public CharacterState _state;
@@ -46,8 +49,40 @@ public class CharacterData : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _renderer = GetComponent<SpriteRenderer>();
+        _boxCollider = GetComponent<BoxCollider2D>();
 
         _initialPosition = transform.position;
         Player = GameObject.FindGameObjectWithTag("Player");
+    }
+
+    public void Hit(CharacterData enemy)
+    {
+        bool isHit = UnityEngine.Random.Range(0, 2) > 0;
+        if (isHit)
+        {
+            var hitPower = UnityEngine.Random.Range(1, enemy.Strength);
+            Health -= hitPower;
+            if (IsDead)
+            {
+                _boxCollider.enabled = false;
+                return;
+            }
+            StartCoroutine("CollideFlash");
+        }
+    }
+
+    IEnumerator CollideFlash()
+    {
+        _renderer.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        _renderer.color = Color.white;
+
+        //Material m = _renderer.material;
+        //Color32 c = _renderer.material.color;
+        //_renderer.material = null;
+        //_renderer.material.color = Color.red;
+        //yield return new WaitForSeconds(0.1f);
+        //_renderer.material = m;
+        //_renderer.material.color = c;
     }
 }

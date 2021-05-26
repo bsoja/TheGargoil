@@ -196,7 +196,7 @@ public class CreatureController : MonoBehaviour
         var playerBounds = _creature.Player.GetComponent<SpriteRenderer>().bounds;
         if (_renderer.bounds.Intersects(playerBounds))
         {
-            _creature.Player.GetComponent<CharacterData>().Health -= UnityEngine.Random.Range(0, _creature.Strength) * _creature.Speed * Time.deltaTime;
+            _creature.Player.GetComponent<CharacterData>().Hit(_creature);
         }
     }
 
